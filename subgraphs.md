@@ -6,7 +6,7 @@ alias: subgraphs
 ---
 # subgraphs
 
-subgraphs are repositories imported into the graph. their pages and files become particles alongside the chronicle — linkable, searchable, and ranked together.
+subgraphs are repositories imported into the graph. their pages and files join the graph as [[files]] alongside the chronicle — linkable, searchable, and ranked together.
 
 this repo is the workspace that declares them. `subgraphs.toml` is the census. `scripts/build.nu` materializes the list into a TOML manifest and hands it to [[optica]] via `--subgraphs`. optica pulls each declared repo, renders its pages, and merges them with the chronicle into one ranked graph.
 

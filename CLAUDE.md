@@ -29,7 +29,7 @@ nu scripts/deploy.nu
 
 ## Writing
 
-state what something is. never define by negation. never use bold. wiki-links for concepts. root terms from the cybergraph: particle, cyberlink, neuron, cybergraph.
+state what something is. never define by negation. never use bold. wiki-links for concepts. root terms from the cybergraph: file, particle, cyberlink, neuron, cybergraph.
 
 ## Do not touch without discussion
 
