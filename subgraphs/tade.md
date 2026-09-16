@@ -1,7 +1,7 @@
 ---
 name: tade
 repo: tade
-visibility: private
+visibility: public
 archived: false
 ---
 
