@@ -53,6 +53,11 @@ name = "optica"
 parent = "cyb"
 visibility = "public"
 
+[[subgraph]]
+name = "seer"
+parent = "cyb"
+visibility = "public"
+
 # /cybics ──────────────────────────────────
 
 [[subgraph]]
@@ -207,6 +212,11 @@ visibility = "public"
 
 [[subgraph]]
 name = "soma"
+parent = "soft3"
+visibility = "public"
+
+[[subgraph]]
+name = "neuron"
 parent = "soft3"
 visibility = "public"
 
