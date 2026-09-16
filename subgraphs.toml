@@ -445,7 +445,7 @@ parent = "rockets"
 visibility = "private"
 
 [[subgraph]]
-name = "bonobia"
+name = "endeka"
 parent = "rockets"
 visibility = "private"
 
