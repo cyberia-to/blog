@@ -29,6 +29,10 @@ name = "cyb"
 visibility = "public"
 
 [[subgraph]]
+name = "cy"
+visibility = "public"
+
+[[subgraph]]
 name = "honeycrisp"
 parent = "cyb"
 visibility = "public"
