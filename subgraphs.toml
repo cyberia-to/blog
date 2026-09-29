@@ -33,6 +33,11 @@ name = "cy"
 visibility = "public"
 
 [[subgraph]]
+name = "sigma"
+parent = "cy"
+visibility = "public"
+
+[[subgraph]]
 name = "honeycrisp"
 parent = "cyb"
 visibility = "public"
