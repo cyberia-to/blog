@@ -15,7 +15,7 @@ this repo is the project chronicle and the graph assembler.
 - `blog/` — the daily beat (`YYYY_MM_DD.md`, tags `blog, beat, <topics>`): one entry a day, a line per news item with a wiki-link to it. optica publishes them as `/YYYY-MM-DD`.
 - `blog.md` — homepage: the beats. `news.md` — every news item.
 - `cyber.md` `cyb.md` `soft3.md` `cyberia.md` — topic hubs. each is also the declaring page for that subgraph, so optica prepends the topic chronicle onto the subgraph README.
-- `subgraphs.toml` — the census of every repo in the published graph.
+- `subgraphs.toml` — the census of the published graph: the top of each tree. a subgraph names its own children in a `subgraphs.toml` at its root (cyberia/subgraphs.toml is the first); optica, `scripts/sync.nu` and the publish clone step read those in turn.
 - `scripts/` — sync, build, serve, lock, deploy.
 
 ## Local workflow

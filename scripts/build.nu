@@ -45,8 +45,12 @@ def main [
         if $is_menu { $base | insert menu_order $it.index } else { $base }
     })
 
-    let config_path = "/tmp/optica-subgraphs.toml"
-    let toml_content = ({subgraphs: $subgraphs} | to toml)
+    # not the serve's file: a build beside a running serve raced it for one path
+    # and a public build read the serve's config (public_only = false)
+    let config_path = "/tmp/optica-subgraphs-build.toml"
+    # public_only tells optica to leave out nested declarations (a subgraph's own
+    # subgraphs.toml) that are private or local-only, as filter-decls did here
+    let toml_content = ({public_only: $public_only, subgraphs: $subgraphs} | to toml)
     $toml_content | save --force $config_path
 
     let optica_bin = if $optica == null {

@@ -9,6 +9,12 @@
 #   archived    — true = exclude from build (default = false)
 #   local-only  — true = exclude from public builds (default = false)
 #   orphan      — true = repo vanished from org, exclude (default = false)
+#
+# A subgraph may carry its own subgraphs.toml, in this same format, naming
+# its children; this file then declares only the top of each tree. Children
+# mount under the parent (cyberia/cyberia-my), live as sibling checkouts,
+# inherit a private parent's privacy, and leave public builds when private
+# or local-only. First tree: cyberia → cyberia/subgraphs.toml.
 
 
 # /cyber ──────────────────────────────────
@@ -396,35 +402,9 @@ visibility = "public"
 # this repo is the graph root (workspace.toml root_subgraph). filtered out of
 # the subgraph list at build time; listed here so the census is complete.
 
-[[subgraph]]
-name = "mimi"
-parent = "cyberia"
-visibility = "private"
-# content lives inside cyberia repo tree: cyberia/research/mimi (not a separate mount)
-
-[[subgraph]]
-name = "midao"
-parent = "cyberia"
-visibility = "private"
-
-
-[[subgraph]]
-name = "events"
-local-only = true
-parent = "cyberia"
-visibility = "private"
-archived = true
-# content at cyberia/research/events (not a separate mount); github still cyberia-to/my
-
-[[subgraph]]
-name = "cyberia-my"
-parent = "cyberia"
-visibility = "public"
-
-[[subgraph]]
-name = "cybland"
-parent = "cyberia"
-visibility = "private"
+# the children of cyberia are declared in cyberia/subgraphs.toml — a subgraph
+# names its own children in a subgraphs.toml at its root; optica, sync.nu and
+# the publish clone step read those files in turn (optica README § subgraphs).
 
 # /cyber-valley ──────────────────────────────────
 

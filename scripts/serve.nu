@@ -42,7 +42,9 @@ def main [
     })
 
     let config_path = "/tmp/optica-subgraphs.toml"
-    ({subgraphs: $subgraphs} | to toml) | save --force $config_path
+    # public_only tells optica to leave out nested declarations (a subgraph's own
+    # subgraphs.toml) that are private or local-only, as filter-decls did here
+    ({public_only: $public_only, subgraphs: $subgraphs} | to toml) | save --force $config_path
 
     let optica_bin = if $optica == null {
         $"($env.HOME)/cyber/optica/target/release/optica"

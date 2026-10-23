@@ -34,32 +34,10 @@ jobs:
           sudo cp "/tmp/nu-${NU_VER}-x86_64-unknown-linux-gnu/nu" /usr/local/bin/nu
           nu --version
 
-      - name: Clone public subgraphs from subgraphs.toml
+      - name: Clone public subgraphs (the root census and every nested subgraphs.toml)
         run: |
           cd "$HOME/cyber/cyberia-blog"
-          nu -c '
-            let decls = (open subgraphs.toml | get subgraph)
-            $decls
-            | where {|d| ($d.name? | default "") != "cyberia-blog"}
-            | where {|d| ($d.archived? | default false) != true}
-            | where {|d| ($d.orphan? | default false) != true}
-            | where {|d| ($d."local-only"? | default false) != true}
-            | where {|d| ($d.visibility? | default "public") == "public"}
-            | each {|d|
-              let name = $d.name
-              let repo = ($d.repo? | default $d.name)
-              let target = $"($env.HOME)/cyber/($name)"
-              if not ($target | path exists) {
-                print $"Cloning ($name) from ($repo)..."
-                let url = $"https://github.com/cyberia-to/($repo).git"
-                try {
-                  ^git clone --depth 1 $url $target
-                } catch {|e|
-                  print $"skip ($name): ($e.msg)"
-                }
-              }
-            }
-          '
+          nu scripts/sync.nu --public-only --shallow
 
       - name: Install Rust
         run: |
