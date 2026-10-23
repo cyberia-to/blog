@@ -92,12 +92,6 @@ archived = false
 default_branch = "master"
 last_seen = "2026-04-23T06:12:47Z"
 
-[repos.mimi]
-visibility = "private"
-archived = false
-default_branch = "main"
-last_seen = "2026-04-23T06:12:48Z"
-
 [repos."cyberia.me"]
 visibility = "private"
 archived = false
