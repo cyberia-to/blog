@@ -6,10 +6,10 @@ crystal-domain: cyberia
 ---
 # courses
 
-field-tested intensives for founding [[cyberia]] — land, tech, governance, collective intelligence. the index lives here; each course's content lives in the city that ran it.
+field-tested intensives for founding [[cyberia]] — land, tech, governance, collective intelligence. a course is a post of the chronicle on the day it was announced, and every lecture a post on the day it was given.
 
 | course | when | where |
 |---|---|---|
 | [[edge city patagonia 2025]] | oct–nov 2025 | Edge City Patagonia · [[cyber valley]] |
 
-pirates of cyber states: village build, energy and water, soil and carbon, biome engineering, the collective intelligence miniconf, the bostrom story. more courses land here as they run.
+the lectures of pirates of cyber states: [[cyber valley story]] · [[energy and water system]] · [[soil, heat and carbon]] · [[biome engineering]] · [[collective intelligence]] · [[bostrom story]]. more courses land here as they run.
