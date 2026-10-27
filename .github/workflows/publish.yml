@@ -56,7 +56,9 @@ jobs:
       - name: Build optica
         run: |
           rm -rf "$HOME/cyber/optica"
-          git clone --depth 1 https://github.com/cyberia-to/optica.git "$HOME/cyber/optica"
+          # pinned to the nested-subgraphs branch until optica#6–#8 land on master: the census
+          # declares cyberia's children in cyberia/subgraphs.toml, which only that optica reads
+          git clone --depth 1 -b feat/nested-subgraphs https://github.com/cyberia-to/optica.git "$HOME/cyber/optica"
           if [ -d /tmp/optica-target-cache ]; then
             mv /tmp/optica-target-cache "$HOME/cyber/optica/target"
           fi
