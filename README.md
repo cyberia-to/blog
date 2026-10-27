@@ -29,7 +29,7 @@ nu scripts/deploy.nu      # rsync build/ → cyberproxy
 
 ## domain
 
-`cyberia.blog` — A `@` → `167.235.28.94`, CNAME `www` → `cyberia.blog`. nginx: `cybernode/servers/cyberproxy/nginx/cyberia.blog`. TLS via certbot after DNS answers. tracker: lytics.cyb.ai.
+`cyberia.blog` — A `@` → `167.235.28.94`, CNAME `www` → `cyberia.blog`. nginx: `apparatus/servers/cyberproxy/nginx/cyberia.blog`. TLS via certbot after DNS answers. tracker: lytics.cyb.ai.
 
 ## license
 
