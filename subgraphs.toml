@@ -185,6 +185,12 @@ parent = "soft3"
 visibility = "public"
 
 [[subgraph]]
+name = "cybernode"
+parent = "soft3"
+visibility = "public"
+# rung 7, the node: the chain kernel, wire, mining, genesis, wallet, specs — moved out of soft3 2026-10-27 (soft3/proposals/cybernode.md)
+
+[[subgraph]]
 name = "tru"
 parent = "soft3"
 visibility = "public"
@@ -454,6 +460,7 @@ parent = "rockets"
 visibility = "private"
 
 [[subgraph]]
-name = "cybernode"
+name = "apparatus"
 parent = "rockets"
 visibility = "private"
+# the operations repository (servers, estate, runbooks), renamed from cybernode 2026-10-27 (soft3/proposals/cybernode.md § 7.1)
