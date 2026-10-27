@@ -1,4 +1,6 @@
-# cyberia-blog — agent instructions
+# AGENTS.md — cyberia-blog
+
+> the doctrine of the home is `~/cyber/AGENTS.md`; it applies here first. Claude Code receives both files at session start through `~/.config/cyber/agents-md.nu`; other agents read them in order.
 
 this repo is the project chronicle and the graph assembler.
 [cyber.page](https://cyber.page) is the protocol. this site is the history, the subgraphs, and the graph.
