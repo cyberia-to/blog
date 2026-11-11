@@ -270,7 +270,7 @@ visibility = "public"
 name = "nu"
 local-only = true
 parent = "neural"
-visibility = "private"
+visibility = "public"
 
 [[subgraph]]
 name = "rs"
@@ -417,7 +417,7 @@ visibility = "public"
 [[subgraph]]
 name = "cve"
 parent = "cyber-valley"
-visibility = "public"
+visibility = "private"
 
 [[subgraph]]
 name = "cyber-valley"
