@@ -48,7 +48,10 @@ def events_of(r, d):
         for h, at, who, subj in rows: months[at[:7]].append((who, subj, h))
         for m, cs in sorted(months.items()):
             who = collections.Counter(c[0] for c in cs)
-            ev.append({**base, "at": m + "-01", "kind": "month", "commits": len(cs), "authors": dict(who.most_common(8)),
+            # inherited: a fork's upstream history, or commits older than the repository (a history imported with the code) —
+            # kept as events, never counted as the team's own work
+            inherited = "fork" if r["fork"] else "imported" if m < r["created_at"][:7] else ""
+            ev.append({**base, "at": m + "-01", "kind": "month", "commits": len(cs), "authors": dict(who.most_common(8)), "inherited": inherited,
                        "what": " · ".join(c[1][:90] for c in cs[:3]), "link": f"https://github.com/{r['full_name']}/commits/{r['default_branch']}?since={m}-01"})
     rc, so, _ = sh("git", "-C", str(d), "for-each-ref", "refs/tags", "--format=%(refname:short)%09%(creatordate:iso-strict)%09%(subject)")
     for l in so.splitlines():
@@ -72,7 +75,7 @@ def main():
     (OUT / "events.jsonl").write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in events))
     years = collections.defaultdict(lambda: collections.Counter())
     for e in events:
-        if e["kind"] == "month": years[(e["org"], e["at"][:4])]["commits"] += e["commits"]
+        if e["kind"] == "month": years[(e["org"], e["at"][:4])]["inherited" if e["inherited"] else "own commits"] += e["commits"]
         if e["kind"] == "first-commit": years[(e["org"], e["at"][:4])]["repos born"] += 1
     summary = {"repositories": len(all_r), "failed": failed, "events": len(events),
                "by_year": {f"{o} {y}": dict(c) for (o, y), c in sorted(years.items(), key=lambda kv: (kv[0][1], kv[0][0]))}}

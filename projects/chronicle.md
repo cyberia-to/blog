@@ -47,7 +47,7 @@ Estimate: agents, about 1 session for s1 + s2 + s6 + s7, 1 session for s5, 2 ses
 
 | # | step | gate | state |
 |---|---|---|---|
-| 1 | s1 git events from 166 repositories | `events.jsonl` with one line per repository's birth, its monthly commits, its tags; the counts match `gh api` | open |
+| 1 | s1 git events from 166 repositories | `events.jsonl` with one line per repository's birth, its monthly commits, its tags; the counts match `gh api` | done 2026-11-17: 2,959 events; own commits are separated from inherited ones (forks, imported histories); receipt `audit/chronicle-git-2026-11-17.md` |
 | 2 | s2 the blog and news as events | every post a line with its link | open |
 | 3 | s6 + s7 BOOT's series and the chain dates | a daily series; every chain date with its source | open |
 | 4 | s3 + s4 the owner's exports read | events with the exports' message ids | waits for the owner |
