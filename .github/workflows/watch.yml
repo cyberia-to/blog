@@ -1,0 +1,34 @@
+name: Watch
+
+# hourly: cyberia.blog must serve the build of the last successful publish.
+# catches what a publish run cannot see once it has ended — a front restored from an older copy,
+# a DNS move onto a host that holds a stale tree.
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+jobs:
+  fresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare the served stamp with the last successful publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "$(gh run list -R "$GITHUB_REPOSITORY" --workflow publish.yml --status in_progress -L 1 --json databaseId -q '.[].databaseId')" ]; then
+            echo "a publish is running; the next hour compares"; exit 0
+          fi
+          want=$(gh run list -R "$GITHUB_REPOSITORY" --workflow publish.yml --branch master --status success -L 1 --json databaseId -q '.[0].databaseId')
+          got=$(curl -fsS -m 20 -H 'Cache-Control: no-cache' "https://cyberia.blog/build.txt?watch=$GITHUB_RUN_ID" | sed -n 's/^run //p' || true)
+          echo "last successful publish: $want · served: ${got:-none}"
+          if [ "$got" != "$want" ]; then
+            bash .github/scripts/alert.sh raise "cyberia.blog serves run ${got:-none}; the last successful publish is run $want"
+            exit 1
+          fi

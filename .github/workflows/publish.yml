@@ -14,6 +14,9 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     env:
       CYBERPROXY_SSH_KEY: ${{ secrets.CYBERPROXY_SSH_KEY }}
     steps:
@@ -72,6 +75,11 @@ jobs:
             --optica "$HOME/cyber/optica/target/release/optica" \
             --output "$HOME/cyber/cyberia-blog/build"
 
+      - name: Stamp the build
+        run: |
+          printf 'run %s\nsha %s\nbuilt %s\n' "$GITHUB_RUN_ID" "$GITHUB_SHA" "$(date -u +%FT%TZ)" \
+            > "$HOME/cyber/cyberia-blog/build/build.txt"
+
       - name: Upload site artifact
         uses: actions/upload-artifact@v4
         with:
@@ -79,13 +87,50 @@ jobs:
           path: ~/cyber/cyberia-blog/build
           retention-days: 14
 
-      - name: Deploy to front-primary
+      - name: Deploy to the host that serves cyberia.blog
         if: github.ref == 'refs/heads/master' && env.CYBERPROXY_SSH_KEY != ''
+        env:
+          FRONT_HOST: ${{ vars.FRONT_HOST }}
         run: |
+          # the target is the address cyberia.blog resolves to, so a move of the front needs no edit here.
+          # the repo variable FRONT_HOST overrides it — needed once the zone carries more than one A record.
+          HOST="$FRONT_HOST"
+          if [ -z "$HOST" ]; then
+            IPS=$(getent ahostsv4 cyberia.blog | awk '{print $1}' | sort -u)
+            if [ "$(printf '%s\n' "$IPS" | grep -c .)" -ne 1 ]; then
+              echo "::error::cyberia.blog resolves to [$(echo $IPS)]; expected one address. set the repo variable FRONT_HOST to the primary front"
+              exit 1
+            fi
+            HOST="$IPS"
+          fi
+          echo "deploy target: $HOST"
           mkdir -p ~/.ssh
-          echo "$CYBERPROXY_SSH_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$CYBERPROXY_SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p 22 -H 213.58.173.242 >> ~/.ssh/known_hosts
+          ssh-keyscan -p 22 -H "$HOST" >> ~/.ssh/known_hosts
           rsync -az --delete -e "ssh -p 22 -i ~/.ssh/id_ed25519" \
             "$HOME/cyber/cyberia-blog/build/" \
-            "cyber@213.58.173.242:/var/www/html/cyberia.blog/"
+            "cyber@$HOST:/var/www/html/cyberia.blog/"
+
+      - name: Verify cyberia.blog serves this build
+        if: github.ref == 'refs/heads/master' && env.CYBERPROXY_SSH_KEY != ''
+        run: |
+          for i in 1 2 3 4 5 6; do
+            got=$(curl -fsS -m 20 -H 'Cache-Control: no-cache' "https://cyberia.blog/build.txt?run=$GITHUB_RUN_ID" | sed -n 's/^run //p' || true)
+            if [ "$got" = "$GITHUB_RUN_ID" ]; then echo "cyberia.blog serves run $got"; exit 0; fi
+            sleep 10
+          done
+          echo "::error::cyberia.blog serves run '${got:-none}', this run is $GITHUB_RUN_ID — the deploy did not reach the host the domain serves"
+          exit 1
+
+      - name: Raise the alarm
+        if: failure() && github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash "$HOME/cyber/cyberia-blog/.github/scripts/alert.sh" raise "publish failed"
+
+      - name: Clear the alarm
+        if: success() && github.ref == 'refs/heads/master' && env.CYBERPROXY_SSH_KEY != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash "$HOME/cyber/cyberia-blog/.github/scripts/alert.sh" clear
