@@ -1,0 +1,46 @@
+name: Beat
+
+# step one of the daily beat (AGENTS.md § The daily beat): the digest of the UTC day that just ended,
+# committed to the branch `digests` as YYYY-MM-DD.md. the writer reads it from there.
+on:
+  schedule:
+    - cron: '7 0 * * *'
+  workflow_dispatch:
+    inputs:
+      day:
+        description: 'UTC day to collect, YYYY-MM-DD (empty: yesterday)'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect the digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DAY: ${{ inputs.day }}
+        run: |
+          DAY="${DAY:-$(date -u -d yesterday +%F)}"
+          echo "DAY=$DAY" >> "$GITHUB_ENV"
+          python3 scripts/beat_collect.py --day "$DAY" --out "$RUNNER_TEMP/digest"
+
+      - name: Commit it to the digests branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git fetch -q origin digests; then
+            git checkout -q -B digests FETCH_HEAD
+          else
+            git checkout -q --orphan digests
+            git rm -rfq .
+          fi
+          cp "$RUNNER_TEMP/digest/$DAY.md" "$DAY.md"
+          git add "$DAY.md"
+          if git diff --cached --quiet; then echo "the digest of $DAY is unchanged"; exit 0; fi
+          git commit -qm "digest: $DAY"
+          git push -q origin digests
