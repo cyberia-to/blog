@@ -2,9 +2,11 @@ name: Beat
 
 # step one of the daily beat (AGENTS.md § The daily beat): the digest of the UTC day that just ended,
 # committed to the branch `digests` as YYYY-MM-DD.md. the writer reads it from there.
+# the schedule asks every hour because GitHub drops scheduled runs (on 2026-11-18 the 00:07 run never fired);
+# a scheduled run leaves at once when the day's digest is already on the branch, so one digest a day is written.
 on:
   schedule:
-    - cron: '7 0 * * *'
+    - cron: '7 * * * *'
   workflow_dispatch:
     inputs:
       day:
@@ -20,16 +22,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Collect the digest
+      - name: Name the day
+        id: day
         env:
-          GH_TOKEN: ${{ github.token }}
           DAY: ${{ inputs.day }}
         run: |
-          DAY="${DAY:-$(date -u -d yesterday +%F)}"
+          if [ -z "$DAY" ]; then
+            DAY="$(date -u -d yesterday +%F)"
+            if git fetch -q origin digests && git cat-file -e "FETCH_HEAD:$DAY.md" 2>/dev/null; then
+              echo "the digest of $DAY is on the branch"; echo "done=true" >> "$GITHUB_OUTPUT"
+            fi
+          fi
           echo "DAY=$DAY" >> "$GITHUB_ENV"
-          python3 scripts/beat_collect.py --day "$DAY" --out "$RUNNER_TEMP/digest"
+
+      - name: Collect the digest
+        if: steps.day.outputs.done != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/beat_collect.py --day "$DAY" --out "$RUNNER_TEMP/digest"
 
       - name: Commit it to the digests branch
+        if: steps.day.outputs.done != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
