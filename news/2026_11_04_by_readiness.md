@@ -2,7 +2,7 @@
 tags: news, soft3, cyberia, tru
 date: 2026-11-04
 ---
-# pussy launches by readiness: the gate is the rewards specification running as the proof of work
+# no genesis on 11-05: on the eve the date gave way to readiness, and the gate is the rewards specification running as the proof of work
 
 the owner's word of 2026-11-04 entered the director's plan in [[soft3]] as decision D20 and the pussy passport of [[cyberia]]. the passport gives it in translation: the project was not ready for a genesis on the next day, and the decision stands that the full rewards specification is implemented and every document that contradicts it is changed. "without it I will not launch the chain — this is the most important thing in the project: the proof of work must really sample values by the rewards distribution."
 
