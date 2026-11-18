@@ -30,7 +30,7 @@ the chronicle is written once a day, for the UTC day that just ended, from the p
 4. write the beat. `blog/YYYY_MM_DD.md`: frontmatter `tags: blog, beat, <topics>` and `date: YYYY-MM-DD`; `# the beat · YYYY-MM-DD`; one sentence for the day; a line per news item, `[[YYYY-MM-DD-slug|the change in a clause]]: one or two sentences`; a closing line for the upkeep when there was any. a beat exists for a day that has at least one news item.
 5. deliver. one branch, one commit `docs: the beat · YYYY-MM-DD`, one pull request into master. the owner merges, and the merge publishes.
 
-topics are the hub and the repository: `cyber` · `cyb` (honeycrisp, wysm, prysm, evy, optica, seer) · `soft3` (bbg, lens, mudra, radio, hemera, strata, zheng, cybernode, tru, glia, mir, tok, nox, cybergraph, tade, foculus, soma, neuron, lytics) · `neural` (trident, eidos, inf, nu, rs, rune) · `warriors` (erga, joy, trisha) · `bootloader` (bostrom, space-pussy) · `cyberia` (cyberia, cyber-valley, cyberia-my, cyberstates, blog).
+topics are the hub and the repository: `cyber` · `cyb` (honeycrisp, wysm, prysm, evy, optica, seer) · `soft3` (bbg, lens, mudra, radio, hemera, strata, zheng, cybernode, tru, glia, mir, tok, nox, cybergraph, tade, foculus, soma, neuron, lytics) · `neural` (trident, eidos, inf, nu, rs, rune) · `warriors` (erga, joy, trisha) · `bootloader` (bostrom, space-pussy) · `cyberia` (cyberia, cyber-valley, cyberia-my, cyberstates). the tag `blog` belongs to beats alone: the homepage lists every page that carries it.
 
 the bounds: public repositories only. personal documents, addresses and payments stay out. a change that exposes an open weakness waits for its fix. plans, moods and deadlines enter only as a source states them.
 
