@@ -1,0 +1,23 @@
+name: Label the beat
+
+# a pull request from the writer (branches claude/beat-* and claude/news-*) gets its lane and its state,
+# so the apparatus cockpit lists it among the decisions waiting for the owner.
+on:
+  pull_request:
+    types: [opened, reopened]
+    branches: [master]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  label:
+    if: startsWith(github.head_ref, 'claude/beat-') || startsWith(github.head_ref, 'claude/news-')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add the lane and the state
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: gh api "repos/$GITHUB_REPOSITORY/issues/$PR/labels" -f "labels[]=contained" -f "labels[]=ready" -q '[.[].name] | join(", ")'
