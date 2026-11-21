@@ -4,7 +4,7 @@ date: 2026-10-14
 ---
 # device proofs measured under one second: hash.tri in 41 ms, a depth-32 membership in 0.15 s
 
-[[soft3]] added a gate row to its proof-system-repair proposal: every proof a user device produces on the product path takes at most 1 s end to end through `joy prove`, with Metal on Apple Silicon as the gate and the constant-size wrap chain kept off that path. the audit beside it holds the day's measurements.
+[[soft3]] added a gate row to its proof-system-repair proposal: every proof a device produces on the product path takes at most 1 s end to end through `joy prove`, with Metal on Apple Silicon as the gate and the constant-size wrap chain kept off that path. the audit beside it holds the day's measurements.
 
 the one-relation profile of [[zheng]], merged into `release/0.4`, got threaded Spartan sumchecks, a faster relation compiler, a proving key held across proofs, and parameters that take the least grinding that keeps a proof within 64 KB, with at least 128 proven bits at every size. the relation cap rose from 32,768 to 2^20, so Merkle paths of depth 8 to 32 fit one relation. `joy prove` of hash.tri on Metal went from 1.47 s of wall time to 0.07 s, 41 ms of it proving. every product-shaped statement up to Merkle depth 16 came under 1 s, and depth 32 took 1.13 s cold.
 

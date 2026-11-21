@@ -4,7 +4,7 @@ date: 2026-10-01
 ---
 # cyb pays the referrer: the Dunbar-decay share landed in the money core
 
-two days after the spec, [[cyb]] core gained `referral.rs`, 254 lines that implement `cyber/specs/referral.md`. the module keeps a referral registry for one cell: bind-once edges from referee to referrer where the first binding wins, the epoch of each neuron's last settled reward, and the set of witnessed neurons, all in ordered maps so that iteration stays deterministic. a binding is rejected as a self-referral, as already bound, or as a cycle.
+two days after the spec, [[cyb]] core gained `referral.rs`, 254 lines that implement `cyber/specs/referral.md`. the module keeps a referral registry for one cell: bind-once bindings from referee to referrer where the first binding wins, the epoch of each neuron's last settled reward, and the set of witnessed neurons, all in ordered maps so that iteration stays deterministic. a binding is rejected as a self-referral, as already bound, or as a cycle.
 
 the constants are the spec's, in micros: a pool of 100,000 (10%), a floor of 10,000 (1%), a Dunbar scale of 150 and a default activity window of 30 epochs. `share_micros(n)` computes max(floor, pool·150 / (150 + 9n)) for n active referees; a witnessed referrer gets the full curve and everyone else earns the floor.
 
